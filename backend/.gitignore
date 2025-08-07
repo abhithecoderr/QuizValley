@@ -1,0 +1,15 @@
+# Dependency directory
+node_modules/
+
+# Environment variables
+.env
+
+# Log files and other generated files
+npm-debug.log
+yarn-error.log
+.nyc_output/
+coverage/
+
+# IDE and OS-specific files
+.vscode/
+.DS_Store
