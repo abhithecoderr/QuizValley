@@ -5,12 +5,16 @@ function QuizBox({ output }) {
   const [showFeedback, setshowFeedback] = useState(null);
   const [userScore, setuserScore] = useState(0);
   const [optionClasses, setOptionClasses] = useState({});
+  const [correct, setCorrect] = useState(null);
 
+  const[showIntroBox, setShowIntroBox] = useState(true);
+  
   const handleOptionClick = (opt) => {
     if (showFeedback) return;
 
     const correct = output[currQues].ans === opt;
     setshowFeedback(true);
+    setCorrect(correct);
 
     if (correct) {
       setuserScore((prev) => prev + 1);
@@ -66,8 +70,8 @@ function QuizBox({ output }) {
 
       {showFeedback && (
         <div className="mt-4 text-lg">
-          {optionClasses[correctAns] === "bg-green-700 hover:bg-green-700" ? (
-            <p className="text-green-500">Correct answer! 🎉</p>
+          {correct ? (
+            <p className="text-green-500">Correct answer</p>
           ) : (
             <p className="text-red-400">{`Wrong. The correct answer is: ${correctAns}`}</p>
           )}

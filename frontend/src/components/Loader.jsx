@@ -32,7 +32,7 @@ export const Loader = () => {
   return (
     <div className="flex flex-col items-center justify-center text-white">
       {/* Slower spinning with 2.5s duration */}
-      <div className="h-12 w-12 animate-spin-slow rounded-full border-4 border-gray-400 border-t-white"></div>
+      <div className="h-8 w-8 animate-spin-slow rounded-full border-4 border-gray-400 border-t-white"></div>
       <p className="mt-4 text-xl font-medium tracking-wide">
         {messages[messageIndex].text}
       </p>

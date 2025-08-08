@@ -1,33 +1,58 @@
-export async function fetchLLMResponse(prompt) {
-  const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY; // Vite env variable
+// To run this code you need to install the following dependencies:
+// npm install @google/genai mime
+// npm install -D @types/node
 
-  const response = await fetch(
-    "https://openrouter.ai/api/v1/chat/completions",
+import { GoogleGenAI } from "@google/genai";
+
+export async function main(prompt, filters) {
+  const ai = new GoogleGenAI({
+    apiKey: import.meta.env.VITE_GEMINI_API_KEY,
+  });
+  const config = {};
+  const model = "gemma-3n-e2b-it";
+  const contents = [
     {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "@preset/quiz-generator",
-        messages: [{ role: "user", content: prompt }],
-      }),
-    }
-  );
+      role: "user",
+      parts: [
+        {
+          text: `Return strictly (in JSON format) an array containing ${filters.question || 10} quiz questions of ${filters.level || "Medium"} difficulty as per the user prompt, each question as an object containing three fields: ques, options, ans. User prompt: ${prompt},`
+        },
+      ],
+    },
+  ];
+  console.log(prompt, filters)
+  const response = await ai.models.generateContentStream({
+    model,
+    config,
+    contents,
+  });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch from OpenRouter API");
+  let fullResponse = '';
+
+  for await (const chunk of response) {
+    fullResponse += chunk.text;
   }
 
-  const data = await response.json();
-  let raw = data.choices[0].message.content;
-  raw = raw
-    .replace(/^\s*```json\s*/, "")
-    .replace(/\s*```$/, "")
-    .trim();
-  const quizArray = JSON.parse(raw);
-  console.log(quizArray);
-  return quizArray;
-  
+  try {
+    // Use a regex to find the content strictly inside the JSON block.
+    const jsonMatch = fullResponse.match(/```json\s*([\s\S]*?)\s*```/);
+    
+    let quizArray;
+
+    if (jsonMatch && jsonMatch[1]) {
+        // If a match is found, parse the captured content.
+        const cleanedResponse = jsonMatch[1].trim();
+        quizArray = JSON.parse(cleanedResponse);
+    } else {
+        // Fallback to parsing the original string if no code block is found.
+        // This can handle cases where the model correctly returns only JSON.
+        quizArray = JSON.parse(fullResponse.trim());
+    }
+    
+    return quizArray;
+
+  } catch (error) {
+    console.error("Failed to parse JSON:", error);
+    console.error("Raw response from model:", fullResponse);
+  }
 }

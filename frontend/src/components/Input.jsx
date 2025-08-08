@@ -1,21 +1,21 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import FilterIcon from "./FilterIcon";
 
-export const Input = ({promptHandler}) => {
+export const Input = ({ promptHandler, promptValue, setshowFilters}) => {
+  const inputPrompt = useRef("");
 
-  const inputPrompt = useRef('');
-
-  const handleClick = ()=> {
-    promptHandler(inputPrompt.current.value);
-  }
+  const handleClick = () => {
+    promptHandler(promptValue.current.value);
+  };
 
   return (
     <>
-      <div className="m-12 flex justify-center">
+      <div className="m-12 mb-10 flex justify-center gap-4">
         <div className="relative w-full max-w-sm">
           <input
             type="text"
             name="input"
-            ref={inputPrompt}
+            ref={promptValue}
             placeholder="Generate a quiz on any topic with AI"
             className="w-full px-4 py-3 pr-12 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:text-white dark:placeholder-gray-300 dark:border-gray-700"
           />
@@ -41,6 +41,7 @@ export const Input = ({promptHandler}) => {
             </svg>
           </button>
         </div>
+        <FilterIcon onClick={()=> setshowFilters(prev=> !prev)}/>
       </div>
     </>
   );
