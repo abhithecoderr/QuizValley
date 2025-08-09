@@ -11,12 +11,16 @@ const topics = [
   "Anime",
   "Biology",
   "Physics",
+  "Chemistry",
+  "Quantum Mechanics",
+  "Computer",
+  "Machine Learning",
 ];
 const levels = ["Easy", "Medium", "Hard"];
 const questions = ["5", "10", "15", "20"];
 const timers = ["30s", "60s", "90s"];
 
-export default function Filters({ setFilters, showFilters }) {
+export default function FilterMenu({ setFilters, showFilters }) {
   const [topic, setTopic] = useState(null);
   const [level, setLevel] = useState(null);
   const [question, setQuestion] = useState(null);

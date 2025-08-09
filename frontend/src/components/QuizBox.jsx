@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Timer } from "./Timer";
 
-function QuizBox({ output }) {
+function QuizBox({ output, filters }) {
   const [currQues, setcurrQues] = useState(0);
   const [showFeedback, setshowFeedback] = useState(null);
   const [userScore, setuserScore] = useState(0);
   const [optionClasses, setOptionClasses] = useState({});
   const [correct, setCorrect] = useState(null);
+  const [isActive, setisActive] = useState(true);
+  const [endQuiz, setEndQuiz] = useState(false);
 
-  const[showIntroBox, setShowIntroBox] = useState(true);
-  
   const handleOptionClick = (opt) => {
     if (showFeedback) return;
 
@@ -36,7 +37,7 @@ function QuizBox({ output }) {
     setOptionClasses({}); // Reset classes for the next question
   };
 
-  if (currQues >= output.length) {
+  if (currQues >= output.length || endQuiz) {
     return (
       <div className="mx-auto my-12 max-w-2xl rounded-2xl bg-slate-800 p-8 shadow-2xl">
         <h2 className="mb-6 text-xl font-semibold text-white">
@@ -52,9 +53,17 @@ function QuizBox({ output }) {
 
   return (
     <div className="mx-auto my-12 max-w-2xl rounded-2xl bg-slate-800 p-8 shadow-2xl">
-      <h2 className="mb-6 text-xl font-semibold leading-relaxed text-white">{`${
-        currQues + 1
-      }. ${q.ques}`}</h2>
+      <div>
+        <h2 className="mb-6 text-xl font-semibold leading-relaxed text-white">{`${
+          currQues + 1
+        }. ${q.ques}`}</h2>
+        <Timer
+          isActive={isActive}
+          seconds={parseInt(filters.timer) || 60}
+          setEndQuiz={setEndQuiz}
+        />
+      </div>
+
       {q.options.map((opt) => (
         <button
           key={opt}

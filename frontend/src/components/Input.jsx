@@ -2,8 +2,7 @@ import { useRef, useState } from "react";
 import FilterIcon from "./FilterIcon";
 
 export const Input = ({ promptHandler, promptValue, setshowFilters}) => {
-  const inputPrompt = useRef("");
-
+  
   const handleClick = () => {
     promptHandler(promptValue.current.value);
   };
@@ -17,7 +16,7 @@ export const Input = ({ promptHandler, promptValue, setshowFilters}) => {
             name="input"
             ref={promptValue}
             placeholder="Generate a quiz on any topic with AI"
-            className="w-full px-4 py-3 pr-12 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-slate-900 dark:text-white dark:placeholder-gray-300 dark:border-gray-700"
+            className="w-full px-4 py-3 pr-12 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#090040] dark:text-white dark:placeholder-gray-300 dark:border-gray-700"
           />
 
           <button
