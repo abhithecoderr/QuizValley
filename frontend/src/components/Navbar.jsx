@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -8,8 +9,8 @@ const Navbar = () => {
 
       {/* Center: Nav Items - absolutely centered */}
       <ul className="absolute left-1/2 transform -translate-x-1/2 flex space-x-8 text-md font-medium rounded-lg">
-        <li className="hover:text-gray-300 cursor-pointer">Home</li>
-        <li className="hover:text-gray-300 cursor-pointer">Custom Quiz</li>
+        <Link to="/"> <li className="hover:text-gray-300 cursor-pointer">Home</li></Link>
+      <Link to="/custom-quiz"> <li className="hover:text-gray-300 cursor-pointer">Custom Quiz</li> </Link>
         <li className="hover:text-gray-300 cursor-pointer">About</li>
       </ul>
 
